@@ -10,7 +10,7 @@ FROM ubuntu:14.04
 #  install several basic packages available in ubuntu
 #  Combining in a single run to reduce layers
 RUN apt update \
-    && apt install -y build-essential python-dev wget vim\
+    && apt install -y build-essential python-dev wget vim emacs\
                       libx11-dev libxpm-dev libxft-dev \
                       libxext-dev libqt4-dev scons git gfortran python-pip \
     && apt-get autoclean \
@@ -56,8 +56,7 @@ RUN pip install --user docopt
 #  ROOT 5.34.32 -- #
 
 WORKDIR /src/root
-RUN ./configure --enable-python --enable-minuit2
-RUN make -j8
+RUN ./configure --enable-python --enable-minuit2 && make -j8
 
 #  root python dependency
 
@@ -69,11 +68,11 @@ RUN pip install root_numpy
 #  Note that we copy this via wget from within the Docker build since it is small.
 #
 WORKDIR /src
-RUN wget https://cmake.org/files/v3.11/cmake-3.11.1-Linux-x86_64.sh
+RUN wget https://cmake.org/files/v3.11/cmake-3.11.1-Linux-x86_64.sh && \
 # Options for following command prevent it from requiring interactive responses
-RUN sh cmake-3.11.1-Linux-x86_64.sh --skip-license --include-subdir
-RUN export PATH=$PATH:/src/cmake-3.11.1-Linux-x86_64/bin
-RUN rm -f cmake-3.11.1-Linux-x86_64.sh
+  sh cmake-3.11.1-Linux-x86_64.sh --skip-license --include-subdir && \
+  export PATH=$PATH:/src/cmake-3.11.1-Linux-x86_64/bin && \
+  rm -f cmake-3.11.1-Linux-x86_64.sh
 
 #  Geant4 10.03.p02 -- #
 
@@ -98,30 +97,28 @@ COPY G4SAIDDATA.tar.gz ${g4data}/
 COPY G4TENDL.tar.gz ${g4data}/
 
 WORKDIR ${g4data}
-RUN mkdir -p G4ABLA && tar zxf G4ABLA.tar.gz -C G4ABLA --strip-components=1
-RUN mkdir -p G4EMLOW && tar zxf G4EMLOW.tar.gz -C G4EMLOW --strip-components=1
-RUN mkdir -p G4ENSDFSTATE && tar zxf G4ENSDFSTATE.tar.gz -C G4ENSDFSTATE --strip-components=1
-RUN mkdir -p G4NDL && tar zxf G4NDL.tar.gz -C G4NDL --strip-components=1
-RUN mkdir -p G4NEUTRONXS && tar zxf G4NEUTRONXS.tar.gz -C G4NEUTRONXS --strip-components=1
-RUN mkdir -p G4PhotonEvaporation && tar zxf G4PhotonEvaporation.tar.gz -C G4PhotonEvaporation --strip-components=1
-RUN mkdir -p G4PII && tar zxf G4PII.tar.gz -C G4PII --strip-components=1
-RUN mkdir -p G4RadioactiveDecay && tar zxf G4RadioactiveDecay.tar.gz -C G4RadioactiveDecay --strip-components=1
-RUN mkdir -p G4RealSurface && tar zxf G4RealSurface.tar.gz -C G4RealSurface --strip-components=1
-RUN mkdir -p G4SAIDDATA && tar zxf G4SAIDDATA.tar.gz -C G4SAIDDATA --strip-components=1
-RUN mkdir -p G4TENDL && tar zxf G4TENDL.tar.gz -C G4TENDL --strip-components=1
-RUN rm -f ${g4data}/G4ABLA.tar.gz
-RUN rm -f ${g4data}/G4EMLOW.tar.gz
-RUN rm -f ${g4data}/G4ENSDFSTATE.tar.gz
-RUN rm -f ${g4data}/G4NDL.tar.gz
-RUN rm -f ${g4data}/G4NEUTRONXS.tar.gz
-RUN rm -f ${g4data}/G4PhotonEvaporation.tar.gz
-RUN rm -f ${g4data}/G4PII.tar.gz
-RUN rm -f ${g4data}/G4RadioactiveDecay.tar.gz
-RUN rm -f ${g4data}/G4RealSurface.tar.gz
-RUN rm -f ${g4data}/G4SAIDDATA.tar.gz
-RUN rm -f ${g4data}/G4TENDL.tar.gz
-RUN pwd
-RUN ls -l
+RUN mkdir -p G4ABLA && tar zxf G4ABLA.tar.gz -C G4ABLA --strip-components=1 &&\
+  mkdir -p G4EMLOW && tar zxf G4EMLOW.tar.gz -C G4EMLOW --strip-components=1 &&\
+  mkdir -p G4ENSDFSTATE && tar zxf G4ENSDFSTATE.tar.gz -C G4ENSDFSTATE --strip-components=1 &&\
+  mkdir -p G4NDL && tar zxf G4NDL.tar.gz -C G4NDL --strip-components=1 &&\
+  mkdir -p G4NEUTRONXS && tar zxf G4NEUTRONXS.tar.gz -C G4NEUTRONXS --strip-components=1 &&\
+  mkdir -p G4PhotonEvaporation && tar zxf G4PhotonEvaporation.tar.gz -C G4PhotonEvaporation --strip-components=1 &&\
+  mkdir -p G4PII && tar zxf G4PII.tar.gz -C G4PII --strip-components=1 &&\
+  mkdir -p G4RadioactiveDecay && tar zxf G4RadioactiveDecay.tar.gz -C G4RadioactiveDecay --strip-components=1 &&\
+  mkdir -p G4RealSurface && tar zxf G4RealSurface.tar.gz -C G4RealSurface --strip-components=1 &&\
+  mkdir -p G4SAIDDATA && tar zxf G4SAIDDATA.tar.gz -C G4SAIDDATA --strip-components=1 &&\
+  mkdir -p G4TENDL && tar zxf G4TENDL.tar.gz -C G4TENDL --strip-components=1 &&\
+  rm -f ${g4data}/G4ABLA.tar.gz &&\
+  rm -f ${g4data}/G4EMLOW.tar.gz &&\
+  rm -f ${g4data}/G4ENSDFSTATE.tar.gz &&\
+  rm -f ${g4data}/G4NDL.tar.gz &&\
+  rm -f ${g4data}/G4NEUTRONXS.tar.gz &&\
+  rm -f ${g4data}/G4PhotonEvaporation.tar.gz &&\
+  rm -f ${g4data}/G4PII.tar.gz &&\
+  rm -f ${g4data}/G4RadioactiveDecay.tar.gz &&\
+  rm -f ${g4data}/G4RealSurface.tar.gz &&\
+  rm -f ${g4data}/G4SAIDDATA.tar.gz &&\
+  rm -f ${g4data}/G4TENDL.tar.gz
 
 WORKDIR ${g4build}
 
@@ -129,11 +126,8 @@ WORKDIR ${g4build}
 # Do not use "-DGEANT4_INSTALL_DATA=ON" to enable auto download & install in cmake
 # since the files are already here (see just above)
 #
-RUN pwd
-RUN ls -l /src/geant4
 RUN /src/cmake-3.11.1-Linux-x86_64/bin/cmake -DCMAKE_INSTALL_PREFIX=${g4build} /src/geant4 -DGEANT4_USE_SYSTEM_EXPAT=OFF -DGEANT4_BUILD_MULTITHREADED=ON -DGEANT4_USE_QT=ON
-RUN make -j8
-RUN make install
+RUN make -j8 && make install
 
 #
 # Manually set all the environment variables defined in geant4.sh and thisroot.sh
@@ -187,10 +181,7 @@ ENV RATROOT=/src/rat-pac
 #
 # Some special code to handle lfariadne.F
 #
-RUN mkdir build
-RUN mkdir build/linuxx8664gcc
-RUN mkdir build/linuxx8664gcc/fit
-RUN mkdir build/linuxx8664gcc/fit/bonsai
+RUN mkdir -p build/linuxx8664gcc/fit/bonsai
 RUN gfortran -c src/fit/bonsai/lfariadne.F -o build/linuxx8664gcc/fit/bonsai/lfariadne.o
 RUN CXXFLAGS=-std=c++11 scons
 WORKDIR /src/rat-pac/tools/bonsai
@@ -223,3 +214,4 @@ ENV G4INSTALL=${g4build}
 RUN pip install rootpy
 
 WORKDIR /root
+COPY Dockerfile Dockerfile

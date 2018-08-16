@@ -2,9 +2,8 @@ Docker Setup
 ------------
 
 To run:
-$ docker build - < dockerfile
 $ python setup.py
-$ docker build .
+$ docker build -t watchdock .
 
 # Setup.py prepares the directory prior to docker building
 # and includes downloading root and geant4

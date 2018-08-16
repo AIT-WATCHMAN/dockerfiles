@@ -1,5 +1,6 @@
 import urllib.request
 import os.path
+from subprocess import call
 
 def download(url, name):
     print('Downloading %s to %s'%(url,name))
@@ -26,3 +27,6 @@ files_to_download = {
 
 for k,v in files_to_download.items():
     download(v, k)
+
+cmd = 'docker build -t aitwatchman/simulation:g410.4.2 .'.split(' ')
+call(cmd)
