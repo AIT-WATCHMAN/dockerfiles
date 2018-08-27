@@ -28,5 +28,5 @@ files_to_download = {
 for k,v in files_to_download.items():
     download(v, k)
 
-cmd = 'docker build -t aitwatchman/simulation:g410.4.2 .'.split(' ')
+cmd = 'docker build -f Dockerfile.base -t aitwatchman/simulation:base .'.split(' ')
 call(cmd)

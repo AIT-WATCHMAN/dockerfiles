@@ -2,6 +2,7 @@
 # Created by Doug Cowen, Penn State, 13Jul2018.  
 # Thanks to Justin Lanfranchi (Penn State grad student on IceCube)
 #
+# Updated by Morgan Askins, Aug-2018
 #
 # Use ubuntu 14.04 as the operating system
 #
@@ -18,9 +19,6 @@ RUN apt update \
 
 # The SHELL command sets the -l option to load profile files so that the proper PATH is set.  I think.
 SHELL ["/bin/sh", "-lc"]
-
-# Create the directory to hold all the code needed to build root, geant, rat-pac, etc.
-# RUN mkdir /src
 
 # Make /src the current working directory for subsequent COPY and RUN commands
 WORKDIR /src
