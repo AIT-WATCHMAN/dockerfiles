@@ -1,6 +1,13 @@
 import urllib.request
 import os.path
 from subprocess import call
+import argparse
+
+def getargs():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--base', action='store_true',
+            help='Rebuild the base image')
+    return parser.parse_args()
 
 def download(url, name):
     print('Downloading %s to %s'%(url,name))
@@ -8,6 +15,8 @@ def download(url, name):
         print(' -- file already available, skipping')
         return
     urllib.request.urlretrieve(url, name)
+
+args = getargs()
 
 files_to_download = { 
         'root.tar.gz':'https://root.cern.ch/download/root_v5.34.32.source.tar.gz',
@@ -28,5 +37,10 @@ files_to_download = {
 for k,v in files_to_download.items():
     download(v, k)
 
-cmd = 'docker build -f Dockerfile.base -t aitwatchman/simulation:base .'.split(' ')
+if args.base:
+    cmd = 'docker build -f Dockerfile.base -t aitwatchman/simulation:base .'.split(' ')
+    call(cmd)
+
+# Build the rat-pac image
+cmd = 'docker build -f Dockerfile -t aitwatchman/simulation:recent .'.split(' ')
 call(cmd)

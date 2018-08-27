@@ -164,7 +164,6 @@ ENV PATH=/src/root/bin:${g4build}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/
 WORKDIR /src
 RUN git clone https://github.com/AIT-WATCHMAN/rat-pac.git rat-pac
 WORKDIR /src/rat-pac
-RUN git checkout watchman
 RUN . ./configure
 #RUN . ./env.sh
 #
@@ -212,4 +211,4 @@ ENV G4INSTALL=${g4build}
 RUN pip install rootpy
 
 WORKDIR /root
-COPY Dockerfile Dockerfile
+COPY Dockerfile.base Dockerfile.base
