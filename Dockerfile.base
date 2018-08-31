@@ -191,7 +191,7 @@ WORKDIR /src/rat-pac/tools/bonsai
 #	Should read: alias watch='python /src/watchmakers/watchmakers.py'
 
 WORKDIR /src
-RUN git clone https://github.com/MarcFBergevin/watchmakers.git
+RUN git clone https://github.com/AIT-WATCHMAN/watchmakers.git
 WORKDIR /src/watchmakers
 RUN ./configure
 #
