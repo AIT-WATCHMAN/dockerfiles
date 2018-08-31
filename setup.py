@@ -42,5 +42,5 @@ if args.base:
     call(cmd)
 
 # Build the rat-pac image
-cmd = 'docker build -f Dockerfile -t aitwatchman/simulation:recent .'.split(' ')
+cmd = 'docker build -f Dockerfile -t aitwatchman/simulation:latest .'.split(' ')
 call(cmd)
