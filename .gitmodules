@@ -1,3 +1,6 @@
 [submodule "rat-pac"]
 	path = rat-pac
 	url = git@github.com:ait-watchman/rat-pac.git
+[submodule "watchmakers"]
+	path = watchmakers
+	url = git@github.com:ait-watchman/watchmakers.git
