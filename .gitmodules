@@ -1,0 +1,3 @@
+[submodule "rat-pac"]
+	path = rat-pac
+	url = git@github.com:ait-watchman/rat-pac.git
